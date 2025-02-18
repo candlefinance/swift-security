@@ -16,7 +16,7 @@ public struct SecItemQuery<Value> where Value: SecItem {
     private init(class: SecItemClass) {
         self.rawValue = [
             // The data protection key makes macOS use modern keychain implementation.
-            kSecUseDataProtectionKeychain: true,
+//            kSecUseDataProtectionKeychain: true,
             kSecClass: `class`.rawValue,
         ] as [String: Any]
     }
@@ -25,7 +25,7 @@ public struct SecItemQuery<Value> where Value: SecItem {
     internal init(value: Value) {
         self.rawValue = [
             // The data protection key makes macOS use modern keychain implementation.
-            kSecUseDataProtectionKeychain: true,
+//            kSecUseDataProtectionKeychain: true,
             kSecValueRef: value,
         ] as [String: Any]
     }
@@ -34,7 +34,7 @@ public struct SecItemQuery<Value> where Value: SecItem {
     internal init(persistentValue: Data) {
         self.rawValue = [
             // The data protection key makes macOS use modern keychain implementation.
-            kSecUseDataProtectionKeychain: true,
+//            kSecUseDataProtectionKeychain: true,
             kSecValuePersistentRef: persistentValue,
         ] as [String: Any]
     }

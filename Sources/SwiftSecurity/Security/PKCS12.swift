@@ -24,7 +24,7 @@ public enum PKCS12 {
         var result: CFArray?
         switch SecPKCS12Import(data as CFData, [
             // The data protection key makes macOS use modern keychain implementation.
-            kSecUseDataProtectionKeychain as String: true,
+//            kSecUseDataProtectionKeychain as String: true,
             kSecImportExportPassphrase as String: passphrase
         ] as CFDictionary, &result) {
         case errSecSuccess:
