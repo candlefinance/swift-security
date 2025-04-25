@@ -565,8 +565,7 @@ final class KeychainTests: XCTestCase {
         XCTAssertEqual(readValue, "firstValue")
 
         // 3. Update to new value
-        let newData = "secondValue".data(using: .utf8)!
-        let didUpdate = try keychain.update(.data(newData), query: query)
+        let didUpdate = try keychain.update("secondValue", query: query)
         print("Did update?", didUpdate)
         XCTAssertTrue(didUpdate, "Expected update to succeed")
 

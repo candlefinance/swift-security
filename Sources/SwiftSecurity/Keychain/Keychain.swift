@@ -247,7 +247,7 @@ extension Keychain: SecItemStore {
             updateDict[kSecValueData as String] = data
         case .reference(let reference):
             updateDict[kSecValueRef as String] = reference
-        default:
+        case .dictionary, .persistentReference:
             throw SwiftSecurityError.invalidParameter
         }
 
@@ -308,6 +308,14 @@ extension Keychain: SecDataStore {
             return nil
         }
     }
+
+    public func update<T: SecDataConvertible>(
+        _ data: T,
+        query: SecItemQuery<GenericPassword>
+    ) throws -> Bool {
+        return try update(.data(data.rawRepresentation), query: query)
+    }
+    
 }
 
 // MARK: - InternetPassword
