@@ -562,6 +562,7 @@ final class KeychainTests: XCTestCase {
         // 2. Read (retrieve) value
         let readValue: String? = try keychain.retrieve(query)
         print("Read value:", readValue ?? "nil")
+        XCTAssertEqual(readValue, "firstValue")
 
         // 3. Update to new value
         let newData = "secondValue".data(using: .utf8)!
@@ -571,6 +572,7 @@ final class KeychainTests: XCTestCase {
 
         if let stored2: String = try keychain.retrieve(query) {
             print("After update:", stored2)
+            XCTAssertEqual(stored2, "secondValue")
         } else {
             XCTFail("Update failed")
         }
