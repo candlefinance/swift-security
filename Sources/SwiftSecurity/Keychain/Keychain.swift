@@ -233,6 +233,34 @@ extension Keychain: SecItemStore {
         
         return try remove(query)
     }
+
+    public func update<SecItem>(
+        _ value: SecValue<SecItem>,
+        query: SecItemQuery<SecItem>
+    ) throws -> Bool {
+        var query = query
+        query.accessGroup = accessGroup.rawValue
+
+        var updateDict: [String: Any] = [:]
+        switch value {
+        case .data(let data):
+            updateDict[kSecValueData as String] = data
+        case .reference(let reference):
+            updateDict[kSecValueRef as String] = reference
+        default:
+            throw SwiftSecurityError.invalidParameter
+        }
+
+        let status = SecItemUpdate(query.rawValue as CFDictionary, updateDict as CFDictionary)
+        switch status {
+        case errSecSuccess:
+            return true
+        case errSecItemNotFound:
+            return false
+        default:
+            throw SwiftSecurityError(rawValue: status)
+        }
+    }
     
     public func removeAll(includingSynchronizableCredentials: Bool = false) throws {
         var gps = SecItemQuery<GenericPassword>()
