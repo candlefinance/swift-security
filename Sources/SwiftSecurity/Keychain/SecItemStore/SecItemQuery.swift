@@ -97,7 +97,7 @@ public extension SecItemQuery {
     ///   - synchronizable: A boolean value indicating whether the item synchronizes through iCloud.
     ///   See [Developer Documentation](https://developer.apple.com/documentation/security/ksecattrsynchronizable).
     /// - Returns: ``SecItemQuery<SecKey>``.
-    public static func key(
+    static func key(
         for applicationTag: String? = nil,
         descriptor: SecKeyDescriptor = .ecPrivateKey,
         synchronizable: Bool? = nil

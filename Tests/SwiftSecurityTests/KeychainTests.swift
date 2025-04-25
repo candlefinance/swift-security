@@ -544,4 +544,44 @@ final class KeychainTests: XCTestCase {
         }
         #endif
     }
+
+    func testUpdateGenericPassword() throws {
+        let keychain = Keychain.default
+        var query = SecItemQuery<GenericPassword>()
+        query.account = "myAccount"
+        query.label = "myLabel"
+
+        // 1. Store initial value
+        try keychain.store("firstValue", query: query)
+        if let stored1: String = try keychain.retrieve(query) {
+            print("After store:", stored1)
+        } else {
+            XCTFail("Store failed")
+        }
+
+        // 2. Read (retrieve) value
+        let readValue: String? = try keychain.retrieve(query)
+        print("Read value:", readValue ?? "nil")
+        XCTAssertEqual(readValue, "firstValue")
+
+        // 3. Update to new value
+        let didUpdate = try keychain.update("secondValue", query: query)
+        print("Did update?", didUpdate)
+        XCTAssertTrue(didUpdate, "Expected update to succeed")
+
+        if let stored2: String = try keychain.retrieve(query) {
+            print("After update:", stored2)
+            XCTAssertEqual(stored2, "secondValue")
+        } else {
+            XCTFail("Update failed")
+        }
+
+        // 4. Delete item
+        let didDelete = try keychain.remove(query)
+        print("Did delete?", didDelete)
+        XCTAssertTrue(didDelete, "Expected delete to succeed")
+
+        let afterDelete: String? = try keychain.retrieve(query)
+        print("After delete:", afterDelete ?? "nil")
+    }
 }
